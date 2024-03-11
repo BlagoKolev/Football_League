@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34607.119
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FootballLeague", "FootballLeague.csproj", "{AE6DDC27-AEEB-4058-945B-9FF6949CDC4D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FootballLeague.Data", "..\FootballLeague.Data\FootballLeague.Data.csproj", "{CADCB12F-7E73-4049-BE70-9F3F52D3B879}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AE6DDC27-AEEB-4058-945B-9FF6949CDC4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE6DDC27-AEEB-4058-945B-9FF6949CDC4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE6DDC27-AEEB-4058-945B-9FF6949CDC4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE6DDC27-AEEB-4058-945B-9FF6949CDC4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CADCB12F-7E73-4049-BE70-9F3F52D3B879}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CADCB12F-7E73-4049-BE70-9F3F52D3B879}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CADCB12F-7E73-4049-BE70-9F3F52D3B879}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CADCB12F-7E73-4049-BE70-9F3F52D3B879}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {58E0E726-EF43-48C8-96F4-E6F53F17C341}
+	EndGlobalSection
+EndGlobal
