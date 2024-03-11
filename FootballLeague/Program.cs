@@ -1,5 +1,7 @@
 using FootballLeague.Data;
 using FootballLeague.Extensions;
+using FootballLeague.Services;
+using FootballLeague.Services.Contracts;
 using Microsoft.EntityFrameworkCore;
 
 namespace FootballLeague
@@ -18,6 +20,8 @@ namespace FootballLeague
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddTransient<ILeagueService,LeagueService>();  
             
             var app = builder.Build();
 
