@@ -2,6 +2,7 @@
 using FootballLeague.Data.Entities;
 using FootballLeague.DTOs;
 using FootballLeague.Services.Contracts;
+using System.Reflection.Metadata.Ecma335;
 
 namespace FootballLeague.Services
 {
@@ -37,6 +38,10 @@ namespace FootballLeague.Services
             var league = CheckIfLeagueExists(leagueName);
 
             if (league == null) { return -1; }
+            if (league.Games.Any())
+            {
+                return -1;
+            }
 
             var teams = GetTeams(league.Id);
             var teamsIds = teams.Select(x => x.Id).ToList();

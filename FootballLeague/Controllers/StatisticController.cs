@@ -1,4 +1,5 @@
-﻿using FootballLeague.Services.Contracts;
+﻿using FootballLeague.DTOs;
+using FootballLeague.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FootballLeague.Controllers
@@ -13,9 +14,10 @@ namespace FootballLeague.Controllers
         {
             this.statistiService = statistiService;
         }
+
         [HttpGet]
         [Route("all-leagues")]
-        public async Task<IActionResult> GetAllLeagues() 
+        public async Task<IActionResult> GetAllLeagues()
         {
             try
             {
@@ -30,6 +32,28 @@ namespace FootballLeague.Controllers
             {
                 return BadRequest("Sorry something went wrong");
             }
+        }
+
+        [HttpGet]
+        [Route("get-league-statistics-by-name")]
+        public async Task<IActionResult> GetLeagueByName(string leagueName)
+        {
+            try
+            {
+                var leagueStatistics = await  statistiService.GetLeagueByName(leagueName);
+
+                if (leagueStatistics != null)
+                {
+                    return Ok(leagueStatistics);
+                }
+                return BadRequest("We do not have statistic for {leagueName} league");
+            }
+            catch (Exception ex)
+            {
+
+                throw new InvalidOperationException();
+            }
+           
         }
     }
 }

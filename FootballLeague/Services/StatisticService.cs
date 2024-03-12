@@ -15,8 +15,8 @@ namespace FootballLeague.Services
         }
         public async Task<ICollection<GetLeagueDto>> GetAllLeagues()
         {
-            var leagues =  await this.db.Leagues
-                .Select(x=> new GetLeagueDto
+            var leagues = await this.db.Leagues
+                .Select(x => new GetLeagueDto
                 {
                     Id = x.Id,
                     Name = x.Name
@@ -24,6 +24,33 @@ namespace FootballLeague.Services
                 .ToListAsync();
 
             return leagues;
+        }
+
+        public async Task<LeagueByNameDto> GetLeagueByName(string leagueName)
+        {
+            var league = await this.db.Leagues
+                .Where(x => x.Name == leagueName)
+                .Select(x => new LeagueByNameDto
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Standings = x.Teams
+                        .Select(x => new TeamDto
+                        {
+                            Name = x.Name,
+                            Points = x.Points,
+                            Wins = x.Wins,
+                            Draws = x.Draws,
+                            Loses = x.Loses,
+                            GoalsScored = x.GoalsScored,
+                            GoalsEarned = x.GoalsEarned
+                        })
+                        .OrderByDescending(x => x.Points)
+                        .ToArray()
+                })
+                .FirstOrDefaultAsync();
+
+            return league;
         }
     }
 }
