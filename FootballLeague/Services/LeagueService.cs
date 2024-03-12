@@ -40,7 +40,7 @@ namespace FootballLeague.Services
             if (league == null) { return -1; }
             if (league.Games.Any())
             {
-                return -1;
+                return -2;
             }
 
             var teams = GetTeams(league.Id);
@@ -81,7 +81,7 @@ namespace FootballLeague.Services
                         RoundNumber = i + teams.Count,
                         LeagueId = league.Id
                     };
-                   
+
 
                     //Add the games in the collection of Fixtures 
                     fixtures.Add(homeGame);
@@ -104,6 +104,16 @@ namespace FootballLeague.Services
         {
             return this.db.Leagues
                .Where(league => league.Name == leagueName)
+               .Select(x => new League
+               {
+                   Id = x.Id,
+                   Games = x.Games
+                   .Select(x => new Games
+                   {
+                       Id = x.Id
+                   })
+                   .ToArray()
+               })
                .FirstOrDefault();
         }
 

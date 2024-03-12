@@ -56,12 +56,15 @@ namespace FootballLeague.Controllers
             try
             {
                 var result = await leagueService.GenerateFixtures(leagueName);
-                if (result > 0)
-                {
-                    return Ok($"Fixtures for {leagueName} league was created. Please proceed with playing maches.");
-                }
 
-                return BadRequest($"League with name {leagueName} does not exist.");
+                switch (result)
+                {
+                    case > 0: return Ok($"Fixtures for {leagueName} league was created. Please proceed with playing maches."); break;
+                    case -1: return BadRequest($"League with name {leagueName} does not exist."); break;
+                    case -2: return BadRequest($"League with name {leagueName} already has Fixtures created."); break;
+                    default: return BadRequest();
+                        break;
+                }
             }
             catch (Exception ex)
             {
