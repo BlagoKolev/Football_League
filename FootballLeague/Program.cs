@@ -23,6 +23,7 @@ namespace FootballLeague
 
             builder.Services.AddTransient<ILeagueService,LeagueService>(); 
             builder.Services.AddTransient<ITeamService, TeamService>();
+            builder.Services.AddTransient<IStatisticService, StatisticService>();
             
             var app = builder.Build();
 
