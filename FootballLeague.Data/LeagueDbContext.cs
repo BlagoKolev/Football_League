@@ -19,6 +19,13 @@ namespace FootballLeague.Data
             base.OnConfiguring(optionsBuilder);
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<League>()
+                .HasIndex(e => e.Name)
+                .IsUnique();
+        }
+
         public DbSet<League>? Leagues { get; set; }
         public DbSet<Team>? Teams { get; set; }
         public DbSet<Games>? Games { get; set; }

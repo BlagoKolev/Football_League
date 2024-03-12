@@ -31,6 +31,7 @@ namespace FootballLeague.Data.Entities
         public byte Draws { get; set; } = 0;
         [Required]
         public int LeagueId { get; set; }
+        public League league { get; set; }
         public ITeamPrototype Clone()
         {
             return (ITeamPrototype)this.MemberwiseClone();

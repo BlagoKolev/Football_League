@@ -3,6 +3,7 @@ using FootballLeague.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FootballLeague.Data.Migrations
 {
     [DbContext(typeof(LeagueDbContext))]
-    partial class LeagueDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240312101436_RemoveRequireForHomeScoreAndGuestScoreInGames")]
+    partial class RemoveRequireForHomeScoreAndGuestScoreInGames
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,8 +49,8 @@ namespace FootballLeague.Data.Migrations
                     b.Property<int>("LeagueId")
                         .HasColumnType("int");
 
-                    b.Property<int>("RoundNumber")
-                        .HasColumnType("int");
+                    b.Property<byte>("RoundNumber")
+                        .HasColumnType("tinyint");
 
                     b.HasKey("Id");
 

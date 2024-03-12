@@ -16,6 +16,7 @@ namespace FootballLeague.Controllers
             this.leagueService = leagueService;
             this.teamService = teamService;
         }
+
         [HttpPost]
         [Route("Create")]
         public async Task<IActionResult> Create([FromBody] string leagueName)
@@ -28,10 +29,14 @@ namespace FootballLeague.Controllers
                 {
                     return BadRequest($"The {leagueName} was not created successfully");
                 }
+                else if (newLeagueId < 0)
+                {
+                    return BadRequest($"The League with name {leagueName} alread exists. Please choose another name.");
+                }
 
                 var teamsResult = await this.teamService.GenerateTeams(newLeagueId);
 
-                if (teamsResult > 0) 
+                if (teamsResult > 0)
                 {
                     return Ok($"The {leagueName} league was created successfully");
                 }
@@ -42,6 +47,28 @@ namespace FootballLeague.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        [HttpPost]
+        [Route("Generate-Fixtures")]
+        public async Task<IActionResult> GenerateFixtures(string leagueName)
+        {
+            try
+            {
+                var result = await leagueService.GenerateFixtures(leagueName);
+                if (result > 0)
+                {
+                    return Ok($"Fixtures for {leagueName} league was created. Please proceed with playing maches.");
+                }
+
+                return BadRequest($"League with name {leagueName} does not exist.");
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
+
         }
     }
 }
