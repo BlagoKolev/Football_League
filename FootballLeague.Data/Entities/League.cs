@@ -11,6 +11,8 @@ namespace FootballLeague.Data.Entities
     {
         [Key]
         public int Id { get; set; }
+        [Required]
+        [StringLength(30, ErrorMessage = "Invalid Name length", MinimumLength = 3)]
         public string? Name { get; set; }
     }
 }

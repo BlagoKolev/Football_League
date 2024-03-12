@@ -14,12 +14,18 @@ namespace FootballLeague.Data.Entities
         [Key]
         public int Id { get; set; }
         [ForeignKey("TeamId")]
+        [Required]
         public int HomeId { get; set; }
         [ForeignKey("TeamId")]
+        [Required]
         public int GuestId { get; set; }
+        [Required]
         public byte HomeScore { get; set; }
+        [Required]
         public byte GuestScore { get; set; }
+        [Required]
         public byte RoundNumber { get; set; }
+        [Required]
         public bool IsPlayed { get; set; }
     }
 }

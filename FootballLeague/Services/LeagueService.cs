@@ -29,8 +29,8 @@ namespace FootballLeague.Services
             };
 
             await db.Leagues.AddAsync(newLeague);
-            var result = await db.SaveChangesAsync();
-            return result;
+            await db.SaveChangesAsync();
+            return newLeague.Id;
         }
     }
 }

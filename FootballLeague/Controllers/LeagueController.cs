@@ -9,19 +9,29 @@ namespace FootballLeague.Controllers
     public class LeagueController : ControllerBase
     {
         private readonly ILeagueService leagueService;
+        private readonly ITeamService teamService;
 
-        public LeagueController(ILeagueService leagueService)
+        public LeagueController(ILeagueService leagueService, ITeamService teamService)
         {
             this.leagueService = leagueService;
+            this.teamService = teamService;
         }
         [HttpPost]
+        [Route("Create")]
         public async Task<IActionResult> Create([FromBody] string leagueName)
         {
             try
             {
-                var result = await this.leagueService.CreateLeague(leagueName);
+                var newLeagueId = await this.leagueService.CreateLeague(leagueName);
 
-                if (result > 0) 
+                if (newLeagueId == null)
+                {
+                    return BadRequest($"The {leagueName} was not created successfully");
+                }
+
+                var teamsResult = await this.teamService.GenerateTeams(newLeagueId);
+
+                if (teamsResult > 0) 
                 {
                     return Ok($"The {leagueName} league was created successfully");
                 }

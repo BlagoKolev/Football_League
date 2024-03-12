@@ -21,7 +21,8 @@ namespace FootballLeague
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddTransient<ILeagueService,LeagueService>();  
+            builder.Services.AddTransient<ILeagueService,LeagueService>(); 
+            builder.Services.AddTransient<ITeamService, TeamService>();
             
             var app = builder.Build();
 
