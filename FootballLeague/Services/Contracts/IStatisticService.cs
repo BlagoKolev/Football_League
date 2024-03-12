@@ -6,5 +6,6 @@ namespace FootballLeague.Services.Contracts
     {
         Task<ICollection<GetLeagueDto>> GetAllLeagues();
         Task<LeagueByNameDto> GetLeagueByName(string leagueName);
+        Task<LeagueByNameDto> GetPlayedGames(string leagueName);
     }
 }

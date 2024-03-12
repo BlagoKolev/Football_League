@@ -1,4 +1,5 @@
 ﻿using FootballLeague.Data;
+using FootballLeague.Data.Entities;
 using FootballLeague.DTOs;
 using FootballLeague.Services.Contracts;
 using Microsoft.EntityFrameworkCore;
@@ -51,6 +52,45 @@ namespace FootballLeague.Services
                 .FirstOrDefaultAsync();
 
             return league;
+        }
+
+        public async Task<LeagueByNameDto> GetPlayedGames(string leagueName)
+        {
+            var isLeagueExist = CheckIfLeagueExists(leagueName);
+
+            if (!isLeagueExist)
+            {
+                return null;
+            }
+
+            var league = await this.db.Leagues
+                .Where(l => l.Name == leagueName)
+                .Select(x => new LeagueByNameDto
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Results = x.Games
+                    .Where(x => x.IsPlayed)
+                    .Select(x => new ResultDto
+                    {
+                        Id = x.Id,
+                        HomeName = this.db.Teams.FirstOrDefault(t => t.Id == x.HomeId).Name,
+                        HomeScore = x.HomeScore,
+                        GuestName = this.db.Teams.FirstOrDefault(t => t.Id == x.GuestId).Name,
+                        GuestScore = x.GuestScore,
+                    })
+                     .ToArray()
+                })
+                .FirstOrDefaultAsync();
+            return league;
+        }
+
+        private bool CheckIfLeagueExists(string leagueName)
+        {
+            var league = this.db.Leagues
+               .Where(league => league.Name == leagueName)
+               .FirstOrDefault();
+            return league != null ? true : false;
         }
     }
 }

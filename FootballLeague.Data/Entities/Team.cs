@@ -10,6 +10,10 @@ namespace FootballLeague.Data.Entities
 {
     public class Team : ITeamPrototype
     {
+        public Team()
+        {
+                this.Games = new List<Games>();
+        }
         [Key]
         public int Id { get; set; }
         [Required]
@@ -32,6 +36,8 @@ namespace FootballLeague.Data.Entities
         [Required]
         public int LeagueId { get; set; }
         public League league { get; set; }
+
+        public ICollection<Games> Games { get; set; }
         public ITeamPrototype Clone()
         {
             return (ITeamPrototype)this.MemberwiseClone();

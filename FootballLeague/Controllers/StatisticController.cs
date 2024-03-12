@@ -35,7 +35,7 @@ namespace FootballLeague.Controllers
         }
 
         [HttpGet]
-        [Route("get-league-statistics-by-name")]
+        [Route("get-league-standings-by-name")]
         public async Task<IActionResult> GetLeagueByName(string leagueName)
         {
             try
@@ -46,7 +46,7 @@ namespace FootballLeague.Controllers
                 {
                     return Ok(leagueStatistics);
                 }
-                return BadRequest("We do not have statistic for {leagueName} league");
+                return BadRequest($"We do not have statistic for {leagueName} league");
             }
             catch (Exception ex)
             {
@@ -54,6 +54,29 @@ namespace FootballLeague.Controllers
                 throw new InvalidOperationException();
             }
            
+        }
+
+        [HttpGet]
+        [Route("get-league-played-games")]
+        public async Task<IActionResult> GetPlayedGames(string leagueName)
+        {
+            try
+            {
+                var leaguePlayedGames = await statistiService.GetPlayedGames(leagueName);
+                if (leaguePlayedGames == null)
+                {
+                    return BadRequest($"League with name {leagueName} does not exist.");
+                }
+                else if (!leaguePlayedGames.Results.Any())
+                {
+                    return Ok($"The {leagueName} league is not started yet.");
+                }
+                return Ok(leaguePlayedGames);
+            }
+            catch (Exception)
+            {
+                throw new InvalidOperationException();                
+            }
         }
     }
 }
