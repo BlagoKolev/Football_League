@@ -22,6 +22,7 @@ namespace FootballLeague.Controllers
         {
             try
             {
+             
                 var result = await teamService.ChangeTeamName(input);
 
                 if (result < 0)
@@ -30,10 +31,15 @@ namespace FootballLeague.Controllers
                 }
                 return Ok($"You have successfully change team name from '{input.CurrentTeamName}' to '{input.NewTeamName}'");
             }
+            catch (NullReferenceException ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, Constants.InvaildInputData);
+            }
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, Constants.ErrorProcessingRequest);
             }
+           
 
         }
     }
