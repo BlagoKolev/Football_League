@@ -11,6 +11,10 @@ namespace FootballLeague.Data.Entities
 {
     public class Games
     {
+        public Games()
+        {
+
+        }
         [Key]
         public int Id { get; set; }
         [ForeignKey("TeamId")]

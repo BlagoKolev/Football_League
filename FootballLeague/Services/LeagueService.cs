@@ -107,6 +107,7 @@ namespace FootballLeague.Services
                .Select(x => new League
                {
                    Id = x.Id,
+                   Name = x.Name,
                    Games = x.Games
                    .Select(x => new Games
                    {

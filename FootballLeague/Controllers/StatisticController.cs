@@ -70,7 +70,7 @@ namespace FootballLeague.Controllers
                 }
                 else if (!leaguePlayedGames.Results.Any())
                 {
-                    return NoContent();
+                    return NotFound($"Season in {leagueName} league still not started.");
                 }
 
                 return Ok(leaguePlayedGames);
@@ -92,6 +92,14 @@ namespace FootballLeague.Controllers
                 if (fixtures == null)
                 {
                     return NotFound(Constants.LeagueNotFound);
+                }
+                else if (!fixtures.Fixtures.Any() && fixtures.Results.Any())
+                {
+                    return NotFound($"The {leagueName} league has completed and no more games to be played.");     
+                }
+                else if (!fixtures.Fixtures.Any())
+                {
+                    return NotFound("This league has no Fixtures created. Please Create one from League section.");
                 }
 
                 return Ok(fixtures);

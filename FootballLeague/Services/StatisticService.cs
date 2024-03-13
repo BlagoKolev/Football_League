@@ -43,14 +43,20 @@ namespace FootballLeague.Services
                     Id = x.Id,
                     Name = x.Name,
                     Fixtures = x.Games
-                    .Select(x => new FixturesDto
+                        .Select(x => new FixturesDto
+                        {
+                            RoundId = x.RoundNumber,
+                            HomeName = this.db.Teams.FirstOrDefault(t => t.Id == x.HomeId).Name,
+                            GuestName = this.db.Teams.FirstOrDefault(t => t.Id == x.GuestId).Name
+                        })
+                        .OrderBy(x => x.RoundId)
+                        .ToArray(),
+                    Results = x.Games
+                    .Select(x => new ResultDto
                     {
-                        RoundId = x.RoundNumber,
-                        HomeName = this.db.Teams.FirstOrDefault(t => t.Id == x.HomeId).Name,
-                        GuestName = this.db.Teams.FirstOrDefault(t => t.Id == x.GuestId).Name
+                        Id = x.Id
                     })
-                    .OrderBy(x=>x.RoundId)
-                    .ToArray()
+                .ToArray()
                 })
                 .FirstOrDefaultAsync();
 
@@ -59,7 +65,9 @@ namespace FootballLeague.Services
 
         public async Task<LeagueByNameDto> GetLeagueByName(string leagueName)
         {
-            var league = await this.db.Leagues
+            var league = CheckIfLeagueExists(leagueName);
+
+            var standings = await this.db.Leagues
                 .Where(x => x.Name == leagueName)
                 .Select(x => new LeagueByNameDto
                 {
@@ -68,21 +76,23 @@ namespace FootballLeague.Services
                     Standings = x.Teams
                         .Select(x => new TeamDto
                         {
+                            Id = x.Id,
                             Name = x.Name,
                             Points = x.Points,
                             Wins = x.Wins,
                             Draws = x.Draws,
                             Loses = x.Loses,
                             GoalsScored = x.GoalsScored,
-                            GoalsEarned = x.GoalsEarned
+                            GoalsEarned = x.GoalsEarned,
+                            LeagueId = x.LeagueId
                         })
                         .OrderByDescending(x => x.Points)
-                        .ThenByDescending(x=>x.GoalsScored - x.GoalsEarned)
+                        .ThenByDescending(x => x.GoalsScored)
                         .ToArray()
                 })
                 .FirstOrDefaultAsync();
 
-            return league;
+            return standings;
         }
 
         public async Task<LeagueByNameDto> GetPlayedGames(string leagueName)
