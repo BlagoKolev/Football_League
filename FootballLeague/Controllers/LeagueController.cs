@@ -60,9 +60,9 @@ namespace FootballLeague.Controllers
 
                 switch (result)
                 {
-                    case > 0: return Ok($"Fixtures for {leagueName} league was created. Please proceed with playing maches."); break;
+                    case > 0: return Ok(Constants.FixturesForLeagueCreatedSuccessfully); break;
                     case -1: return BadRequest(Constants.LeagueNotFound); break;
-                    case -2: return BadRequest($"League with name {leagueName} already has Fixtures created."); break;
+                    case -2: return BadRequest(Constants.LeagueAlreadyHasFixturesCreated); break;
                     default:
                         return BadRequest();
                         break;
