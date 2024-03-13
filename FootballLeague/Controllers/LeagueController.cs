@@ -1,4 +1,5 @@
 ﻿using FootballLeague.Data;
+using FootballLeague.Helper;
 using FootballLeague.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,7 +28,7 @@ namespace FootballLeague.Controllers
 
                 if (newLeagueId == null)
                 {
-                    return BadRequest($"The {leagueName} was not created successfully");
+                    return BadRequest(Constants.LeagueCreationFailed);
                 }
                 else if (newLeagueId < 0)
                 {
@@ -38,14 +39,14 @@ namespace FootballLeague.Controllers
 
                 if (teamsResult > 0)
                 {
-                    return Ok($"The {leagueName} league was created successfully");
+                    return Ok(Constants.LeagueCreationSuccessfull);
                 }
 
-                return BadRequest($"The {leagueName} was not created successfully");
+                return BadRequest(Constants.LeagueCreationFailed);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, Constants.ErrorProcessingRequest);
             }
         }
 
@@ -60,15 +61,16 @@ namespace FootballLeague.Controllers
                 switch (result)
                 {
                     case > 0: return Ok($"Fixtures for {leagueName} league was created. Please proceed with playing maches."); break;
-                    case -1: return BadRequest($"League with name {leagueName} does not exist."); break;
+                    case -1: return BadRequest(Constants.LeagueNotFound); break;
                     case -2: return BadRequest($"League with name {leagueName} already has Fixtures created."); break;
-                    default: return BadRequest();
+                    default:
+                        return BadRequest();
                         break;
                 }
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, Constants.ErrorProcessingRequest);
             }
 
         }

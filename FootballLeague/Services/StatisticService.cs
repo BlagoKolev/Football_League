@@ -27,6 +27,36 @@ namespace FootballLeague.Services
             return leagues;
         }
 
+        public async Task<LeagueByNameDto> GetFixtures(string leagueName)
+        {
+            var league = CheckIfLeagueExists(leagueName);
+
+            if (league == null)
+            {
+                return null;
+            }
+
+            var fixtures = await this.db.Leagues
+                .Where(x => x.Name == leagueName)
+                .Select(x => new LeagueByNameDto
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Fixtures = x.Games
+                    .Select(x => new FixturesDto
+                    {
+                        RoundId = x.RoundNumber,
+                        HomeName = this.db.Teams.FirstOrDefault(t => t.Id == x.HomeId).Name,
+                        GuestName = this.db.Teams.FirstOrDefault(t => t.Id == x.GuestId).Name
+                    })
+                    .OrderBy(x=>x.RoundId)
+                    .ToArray()
+                })
+                .FirstOrDefaultAsync();
+
+            return fixtures;
+        }
+
         public async Task<LeagueByNameDto> GetLeagueByName(string leagueName)
         {
             var league = await this.db.Leagues
@@ -47,6 +77,7 @@ namespace FootballLeague.Services
                             GoalsEarned = x.GoalsEarned
                         })
                         .OrderByDescending(x => x.Points)
+                        .ThenByDescending(x=>x.GoalsScored - x.GoalsEarned)
                         .ToArray()
                 })
                 .FirstOrDefaultAsync();
@@ -56,9 +87,9 @@ namespace FootballLeague.Services
 
         public async Task<LeagueByNameDto> GetPlayedGames(string leagueName)
         {
-            var isLeagueExist = CheckIfLeagueExists(leagueName);
+            var leagueDb = CheckIfLeagueExists(leagueName);
 
-            if (!isLeagueExist)
+            if (leagueDb == null)
             {
                 return null;
             }
@@ -84,13 +115,12 @@ namespace FootballLeague.Services
                 .FirstOrDefaultAsync();
             return league;
         }
-
-        private bool CheckIfLeagueExists(string leagueName)
+        private League CheckIfLeagueExists(string leagueName)
         {
             var league = this.db.Leagues
                .Where(league => league.Name == leagueName)
                .FirstOrDefault();
-            return league != null ? true : false;
+            return league;
         }
     }
 }

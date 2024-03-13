@@ -1,4 +1,5 @@
 ﻿using FootballLeague.DTOs;
+using FootballLeague.Helper;
 using FootballLeague.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,15 +23,16 @@ namespace FootballLeague.Controllers
             try
             {
                 var existingLeagues = await statistiService.GetAllLeagues();
+
                 if (existingLeagues.Count > 0)
                 {
                     return Ok(existingLeagues);
                 }
-                return BadRequest("We don`t have any existing Leagues at this moment. You can try to Create your own League in the League section.");
+                return NotFound("We don`t have any existing Leagues at this moment. You can try to Create your own League in the League section.");
             }
             catch (Exception ex)
             {
-                return BadRequest("Sorry something went wrong");
+                return StatusCode(StatusCodes.Status500InternalServerError, Constants.ErrorProcessingRequest);
             }
         }
 
@@ -40,20 +42,19 @@ namespace FootballLeague.Controllers
         {
             try
             {
-                var leagueStatistics = await  statistiService.GetLeagueByName(leagueName);
+                var leagueStatistics = await statistiService.GetLeagueByName(leagueName);
 
                 if (leagueStatistics != null)
                 {
                     return Ok(leagueStatistics);
                 }
-                return BadRequest($"We do not have statistic for {leagueName} league");
+                return NotFound($"We do not have statistic for {leagueName} league");
             }
             catch (Exception ex)
             {
-
-                throw new InvalidOperationException();
+                return StatusCode(StatusCodes.Status500InternalServerError, Constants.ErrorProcessingRequest);
             }
-           
+
         }
 
         [HttpGet]
@@ -65,17 +66,39 @@ namespace FootballLeague.Controllers
                 var leaguePlayedGames = await statistiService.GetPlayedGames(leagueName);
                 if (leaguePlayedGames == null)
                 {
-                    return BadRequest($"League with name {leagueName} does not exist.");
+                    return NotFound(Constants.LeagueNotFound);
                 }
                 else if (!leaguePlayedGames.Results.Any())
                 {
-                    return Ok($"The {leagueName} league is not started yet.");
+                    return NoContent();
                 }
+
                 return Ok(leaguePlayedGames);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new InvalidOperationException();                
+                return StatusCode(StatusCodes.Status500InternalServerError, Constants.ErrorProcessingRequest);
+            }
+        }
+
+        [HttpGet]
+        [Route("get-league-fixtures")]
+        public async Task<IActionResult> GetLeagueFixtures(string leagueName)
+        {
+            try
+            {
+                var fixtures = await statistiService.GetFixtures(leagueName);
+
+                if (fixtures == null)
+                {
+                    return NotFound(Constants.LeagueNotFound);
+                }
+
+                return Ok(fixtures);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, Constants.ErrorProcessingRequest);
             }
         }
     }
