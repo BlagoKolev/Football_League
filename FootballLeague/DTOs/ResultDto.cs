@@ -7,5 +7,6 @@
         public byte HomeScore { get; set; }
         public string? GuestName { get; set; }
         public int GuestScore { get; set; }
+        public int RoundNumber { get; set; }
     }
 }

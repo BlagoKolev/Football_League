@@ -43,11 +43,12 @@ namespace FootballLeague.Services
                     Id = x.Id,
                     Name = x.Name,
                     Fixtures = x.Games
+                    .Where(x => !x.IsPlayed)
                         .Select(x => new FixturesDto
                         {
                             RoundId = x.RoundNumber,
                             HomeName = this.db.Teams.FirstOrDefault(t => t.Id == x.HomeId).Name,
-                            GuestName = this.db.Teams.FirstOrDefault(t => t.Id == x.GuestId).Name
+                            GuestName = this.db.Teams.FirstOrDefault(t => t.Id == x.GuestId).Name,
                         })
                         .OrderBy(x => x.RoundId)
                         .ToArray(),
@@ -119,7 +120,9 @@ namespace FootballLeague.Services
                         HomeScore = x.HomeScore,
                         GuestName = this.db.Teams.FirstOrDefault(t => t.Id == x.GuestId).Name,
                         GuestScore = x.GuestScore,
+                        RoundNumber = x.RoundNumber
                     })
+                    .OrderBy(x => x.RoundNumber)
                      .ToArray()
                 })
                 .FirstOrDefaultAsync();
