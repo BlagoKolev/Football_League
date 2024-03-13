@@ -8,6 +8,7 @@
         public const string LeagueCreationSuccessfull = "The League was created successfully";
         public const string LeagueAlreadyHasFixturesCreated = "This League already has Fixtures created.";
         public const string FixturesForLeagueCreatedSuccessfully = "Fixtures for this League was created. Please proceed with playing maches.";
+        public const string LeagueOrTeamNotExist = "League or Team does not exists.";
 
         public const byte WinPoints = 3;
         public const byte DrawPoints = 1;

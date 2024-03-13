@@ -26,7 +26,7 @@ namespace FootballLeague.Controllers
 
                 if (result < 0)
                 {
-                    return BadRequest("League or Team does not exists.");
+                    return BadRequest(Constants.LeagueOrTeamNotExist);
                 }
                 return Ok($"You have successfully change team name from '{input.CurrentTeamName}' to '{input.NewTeamName}'");
             }
