@@ -52,12 +52,12 @@ namespace FootballLeague.Services
                         })
                         .OrderBy(x => x.RoundId)
                         .ToArray(),
-                    Results = x.Games
-                    .Select(x => new ResultDto
-                    {
-                        Id = x.Id
-                    })
-                .ToArray()
+                //    Results = x.Games
+                //    .Select(x => new ResultDto
+                //    {
+                //        Id = x.Id
+                //    })
+                //.ToArray()
                 })
                 .FirstOrDefaultAsync();
 

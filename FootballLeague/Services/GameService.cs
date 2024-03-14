@@ -15,27 +15,29 @@ namespace FootballLeague.Services
         {
             this.db = db;
         }
-        public async Task<bool> AutoPlayAllSeason(string leagueName)
+        public int AutoPlayAllSeason(string leagueName)
         {
             var currentLeague = GetLeagueByName(leagueName);
+           
+            var gamesToBePlayed = GetGamesToPlay(currentLeague.Id);
 
-            var gamesToBePlayed = await GetGamesToPlay(currentLeague.Id);
+            if (currentLeague == null || !gamesToBePlayed.Any())
+            {
+                return -1;
+            }
 
             PlayGame(gamesToBePlayed);
 
-
-
-
-            return true;
+            return 1;
         }
 
         private League GetLeagueByName(string leagueName)
         {
             return this.db.Leagues.Where(x => x.Name == leagueName).FirstOrDefault();
         }
-        private async Task<List<PlayGameDto>> GetGamesToPlay(int leagueId)
+        private  List<PlayGameDto> GetGamesToPlay(int leagueId)
         {
-            var games = await this.db.Games
+            var games =  this.db.Games
                 .Where(x => x.LeagueId == leagueId && !x.IsPlayed)
                 .Select(x => new PlayGameDto
                 {
@@ -49,7 +51,7 @@ namespace FootballLeague.Services
                     RoundNumber = x.RoundNumber
                 })
                 .OrderBy(x => x.RoundNumber)
-                .ToListAsync();
+                .ToList();
 
             return games;
         }
@@ -61,7 +63,7 @@ namespace FootballLeague.Services
             return score;
         }
 
-        private async void PlayGame(List<PlayGameDto> gamesToBePlayed)
+        private void PlayGame(List<PlayGameDto> gamesToBePlayed)
         {
 
             for (int i = 0; i < gamesToBePlayed.Count; i++)
@@ -77,9 +79,7 @@ namespace FootballLeague.Services
 
                 var updateGamesResult = UpdateGamesEntity(currentGame);
                 var updateTeamsResul = UpdateTeamEntity(currentGame);
-
             }
-
         }
 
         private int UpdateGamesEntity(PlayGameDto currentGame)

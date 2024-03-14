@@ -1,4 +1,5 @@
-﻿using FootballLeague.Services.Contracts;
+﻿using FootballLeague.Helper;
+using FootballLeague.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FootballLeague.Controllers
@@ -16,11 +17,24 @@ namespace FootballLeague.Controllers
 
         [HttpGet]
         [Route("autoplay-season")]
-        public async Task<IActionResult> AutoPlayAllSeason(string leagueName)
+        public IActionResult AutoPlayAllSeason(string leagueName)
         {
-            var a =  await gameService.AutoPlayAllSeason(leagueName);
+            try
+            {
+                var result = gameService.AutoPlayAllSeason(leagueName);
 
-            return Ok();
+                if (result < 0)
+                {
+                    return BadRequest(Constants.LeagueNotFound);
+                }
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, Constants.ErrorProcessingRequest);
+            }
+
         }
     }
 }

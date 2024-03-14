@@ -2,6 +2,6 @@
 {
     public interface IGameService
     {
-        Task<bool> AutoPlayAllSeason(string leagueName);
+        int AutoPlayAllSeason(string leagueName);
     }
 }

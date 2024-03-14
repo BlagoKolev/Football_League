@@ -93,13 +93,13 @@ namespace FootballLeague.Controllers
                 {
                     return NotFound(Constants.LeagueNotFound);
                 }
-                else if (!fixtures.Fixtures.Any() && fixtures.Results.Any())
-                {
-                    return NotFound($"The {leagueName} league has completed and no more games to be played.");     
-                }
+                //else if (!fixtures.Fixtures.Any() && fixtures.Results.Any())
+                //{
+                //    return NotFound($"The {leagueName} league has completed and no more games to be played.");     
+                //}
                 else if (!fixtures.Fixtures.Any())
                 {
-                    return NotFound("This league has no Fixtures created. Please Create one from League section.");
+                    return NotFound("This League has no Fixtures created or the season has finished.");
                 }
 
                 return Ok(fixtures);
