@@ -28,4 +28,5 @@
 - Entity Framework Core
 - MSSQL Server
 ---
+### :bulb: Unit tests are included in the project.
 
