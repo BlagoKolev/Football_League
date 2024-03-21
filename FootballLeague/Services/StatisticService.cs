@@ -47,17 +47,19 @@ namespace FootballLeague.Services
                         .Select(x => new FixturesDto
                         {
                             RoundId = x.RoundNumber,
-                            HomeName = this.db.Teams.FirstOrDefault(t => t.Id == x.HomeId).Name,
-                            GuestName = this.db.Teams.FirstOrDefault(t => t.Id == x.GuestId).Name,
+                            //HomeName = this.db.Teams.FirstOrDefault(t => t.Id == x.HomeId).Name,
+                            //GuestName = this.db.Teams.FirstOrDefault(t => t.Id == x.GuestId).Name,
+                            HomeName = x.HomeTeam.Name,
+                            GuestName = x.GuestTeam.Name
                         })
                         .OrderBy(x => x.RoundId)
                         .ToArray(),
-                //    Results = x.Games
-                //    .Select(x => new ResultDto
-                //    {
-                //        Id = x.Id
-                //    })
-                //.ToArray()
+                    //    Results = x.Games
+                    //    .Select(x => new ResultDto
+                    //    {
+                    //        Id = x.Id
+                    //    })
+                    //.ToArray()
                 })
                 .FirstOrDefaultAsync();
 
@@ -116,9 +118,11 @@ namespace FootballLeague.Services
                     .Select(x => new ResultDto
                     {
                         Id = x.Id,
-                        HomeName = this.db.Teams.FirstOrDefault(t => t.Id == x.HomeId).Name,
+                        // HomeName = this.db.Teams.FirstOrDefault(t => t.Id == x.HomeId).Name,
+                        HomeName = x.HomeTeam.Name,
                         HomeScore = x.HomeScore,
-                        GuestName = this.db.Teams.FirstOrDefault(t => t.Id == x.GuestId).Name,
+                        //GuestName = this.db.Teams.FirstOrDefault(t => t.Id == x.GuestId).Name,
+                        GuestName = x.GuestTeam.Name,
                         GuestScore = x.GuestScore,
                         RoundNumber = x.RoundNumber
                     })

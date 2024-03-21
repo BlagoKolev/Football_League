@@ -59,7 +59,7 @@ namespace FootballLeague.Services
         private byte GetRandomScore()
         {
             var random = new Random();
-            var score = (byte)random.Next(1, 5);
+            var score = (byte)random.Next(0, 5);
             return score;
         }
 

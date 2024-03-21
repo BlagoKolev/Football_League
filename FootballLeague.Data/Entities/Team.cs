@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,12 +13,13 @@ namespace FootballLeague.Data.Entities
     {
         public Team()
         {
-                //this.Games = new List<Games>();
+            this.HomeGames = new List<Games>();
+            this.GuestGames = new List<Games>();
         }
         [Key]
         public int Id { get; set; }
         [Required]
-        [StringLength(30,ErrorMessage = "Invalid Name length", MinimumLength =3)]
+        [StringLength(30, ErrorMessage = "Invalid Name length", MinimumLength = 3)]
         public string? Name { get; set; }
         [Required]
         public byte Strength { get; set; } = 0;
@@ -37,7 +39,10 @@ namespace FootballLeague.Data.Entities
         public int LeagueId { get; set; }
         public League league { get; set; }
 
-       // public ICollection<Games> Games { get; set; }
+        [InverseProperty("HomeTeam")]
+        public virtual ICollection<Games> HomeGames { get; set; }
+        [InverseProperty("GuestTeam")]
+        public virtual ICollection<Games> GuestGames { get; set; }
         public ITeamPrototype Clone()
         {
             return (ITeamPrototype)this.MemberwiseClone();

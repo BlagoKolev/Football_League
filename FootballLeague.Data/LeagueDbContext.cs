@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace FootballLeague.Data
@@ -24,6 +25,18 @@ namespace FootballLeague.Data
             modelBuilder.Entity<League>()
                 .HasIndex(e => e.Name)
                 .IsUnique();
+
+            modelBuilder.Entity<Games>()
+                 .HasOne(m => m.HomeTeam)
+                 .WithMany(t => t.HomeGames)
+                 .HasForeignKey(m => m.HomeId)
+                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Games>()
+                 .HasOne(m => m.GuestTeam)
+                 .WithMany(t => t.GuestGames)
+                 .HasForeignKey(m => m.GuestId)
+                 .OnDelete(DeleteBehavior.Restrict);
         }
 
         public DbSet<League>? Leagues { get; set; }

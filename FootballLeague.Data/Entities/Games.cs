@@ -17,10 +17,10 @@ namespace FootballLeague.Data.Entities
         }
         [Key]
         public int Id { get; set; }
-        [ForeignKey("TeamId")]
+        //[ForeignKey("TeamId")]
         [Required]
         public int HomeId { get; set; }
-        [ForeignKey("TeamId")]
+       // [ForeignKey("TeamId")]
         [Required]
         public int GuestId { get; set; }
         public byte HomeScore { get; set; }
@@ -32,6 +32,8 @@ namespace FootballLeague.Data.Entities
         [Required]
         public int LeagueId { get; set; }
         public League league { get; set; }
+        public virtual Team HomeTeam { get; set; }
+        public virtual Team GuestTeam { get; set; }
     }
 }
 
